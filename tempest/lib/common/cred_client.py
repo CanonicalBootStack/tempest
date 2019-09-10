@@ -153,6 +153,17 @@ class V3CredsClient(CredsClient):
             domain_id=self.creds_domain['id'])['project']
         return project
 
+    def create_user(self, username, password, project, email):
+        params = {'name': username,
+                  'password': password,
+                  self.project_id_param: project['id'],
+                  'email': email,
+                  'domain_id': self.creds_domain['id']}
+        user = self.users_client.create_user(**params)
+        if 'user' in user:
+            user = user['user']
+        return user
+
     def delete_project(self, project_id):
         self.projects_client.delete_project(project_id)
 
